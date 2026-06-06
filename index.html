@@ -34,8 +34,8 @@
             'alert-dark':  '#3D1500',
             'ghost-gray':  '#1A1A1A',
             'wire-gray':   '#2A2A2A',
-            'text-muted':  '#6B6B6B',
-            'text-dim':    '#3D3D3D',
+            'text-muted':  '#A3A3A3', /* 調亮灰色提升基礎易讀性 */
+            'text-dim':    '#525252',
           },
           fontFamily: {
             mono:    ['"Share Tech Mono"', 'monospace'],
@@ -88,7 +88,7 @@
 
   <style>
     /* ───────────────────────────────────────────
-       全域底層樣式
+       全域底層樣式與字級放大 1.5 倍設定
     ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; }
 
@@ -98,6 +98,7 @@
       font-family: 'Rajdhani', sans-serif;
       overflow-x: hidden;
       cursor: crosshair;
+      font-size: 1.35rem; /* 全域基礎非粗體字級放大 */
     }
 
     /* CRT 掃描線效果 */
@@ -116,7 +117,6 @@
       z-index: 9999;
     }
 
-    /* 四周暗角效果 */
     body::after {
       content: '';
       position: fixed;
@@ -126,29 +126,44 @@
       z-index: 9998;
     }
 
-    /* ── 字型快捷 ── */
+    /* ── 字型快捷與字級精準調大 1.5 倍 ── */
     .font-display { font-family: 'Orbitron', sans-serif; }
     .font-mono    { font-family: 'Share Tech Mono', monospace; }
     .font-body    { font-family: 'Rajdhani', sans-serif; }
 
+    /* 放大非粗體文字級別 */
+    p:not(.font-bold), span:not(.font-bold), div:not(.font-bold), label:not(.font-bold) {
+      font-size: 1.35rem !important; 
+    }
+    .text-xs { font-size: 1.1rem !important; }
+    .text-sm { font-size: 1.3rem !important; }
+    .text-base { font-size: 1.5rem !important; }
+    .text-lg { font-size: 1.8rem !important; }
+    .text-xl { font-size: 2.1rem !important; }
+    .text-2xl { font-size: 2.5rem !important; }
+    .text-3xl { font-size: 3rem !important; }
+    .text-4xl { font-size: 3.8rem !important; }
+
     /* ── 霓虹文字光暈 ── */
     .glow-green {
+      color: #00FF66 !important;
       text-shadow:
-        0 0 4px  #00FF66,
-        0 0 12px #00FF6688,
-        0 0 24px #00FF6644;
+        0 0 6px  #00FF66,
+        0 0 18px #00FF66AA,
+        0 0 35px #00FF6666;
     }
     .glow-orange {
       text-shadow:
-        0 0 4px  #FF5500,
-        0 0 12px #FF550088,
-        0 0 24px #FF550044;
+        0 0 6px  #FF5500,
+        0 0 18px #FF5500AA,
+        0 0 35px #FF550066;
     }
     .glow-red {
+      color: #FF2200 !important;
       text-shadow:
-        0 0 4px  #FF2200,
-        0 0 12px #FF220088,
-        0 0 24px #FF220044;
+        0 0 8px  #FF2200,
+        0 0 24px #FF2200AA,
+        0 0 45px #FF220066;
     }
 
     /* ── 霓虹邊框 ── */
@@ -174,10 +189,7 @@
         inset 0 0 8px  #FF220033;
     }
 
-    /* ── 雜訊紋理疊加 ── */
-    .noise-overlay {
-      position: relative;
-    }
+    .noise-overlay { position: relative; }
     .noise-overlay::after {
       content: '';
       position: absolute;
@@ -188,10 +200,7 @@
       pointer-events: none;
     }
 
-    /* ── Glitch 標題效果 ── */
-    .glitch-title {
-      position: relative;
-    }
+    .glitch-title { position: relative; }
     .glitch-title::before,
     .glitch-title::after {
       content: attr(data-text);
@@ -226,17 +235,17 @@
     /* ── 按鈕樣式 ── */
     .btn-primary {
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
       letter-spacing: 0.15em;
       background: transparent;
       color: #00FF66;
-      border: 1px solid #00FF66;
-      padding: 14px 36px;
+      border: 2px solid #00FF66;
+      padding: 16px 40px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
       transition: color 0.3s, background 0.3s;
       clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+      font-weight: bold;
     }
     .btn-primary::before {
       content: '';
@@ -253,53 +262,69 @@
 
     .btn-danger {
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.75rem;
       letter-spacing: 0.1em;
       background: transparent;
       color: #FF5500;
-      border: 1px solid #FF5500;
-      padding: 12px 28px;
+      border: 2px solid #FF5500;
+      padding: 14px 32px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
       transition: color 0.3s, background 0.3s;
       clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+      font-weight: bold;
     }
     .btn-danger:hover { background: #FF5500; color: #050505; }
 
-    /* ── 勾選框自訂樣式 ── */
-    .custom-check {
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border: 1px solid #00FF6688;
-      background: transparent;
+    /* ── 表單單選卡片與客製樣式 ── */
+    .option-group-box {
+      background: rgba(15, 15, 15, 0.8);
+      border: 1px solid #2A2A2A;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+    }
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      border: 1px solid #2A2A2A;
+      background: #0A0A0A;
+      margin-top: 10px;
       cursor: pointer;
+      transition: all 0.2s;
+    }
+    .radio-label:hover {
+      border-color: #00FF6688;
+      background: #001A0A;
+    }
+    .radio-label input[type="radio"] {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #00FF6688;
+      border-radius: fill;
       position: relative;
+      cursor: pointer;
+      outline: none;
       flex-shrink: 0;
-      margin-top: 2px;
-      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .custom-check:checked {
-      background: #00FF6622;
+    .radio-label input[type="radio"]:checked {
       border-color: #00FF66;
-      box-shadow: 0 0 8px #00FF6666;
+      background: #00FF6622;
     }
-    .custom-check:checked::after {
-      content: '✓';
+    .radio-label input[type="radio"]:checked::after {
+      content: '';
       position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #00FF66;
+      border-radius: 50%;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      color: #00FF66;
-      font-size: 12px;
-      line-height: 1;
-    }
-    .custom-check:hover {
-      border-color: #00FF66;
-      box-shadow: 0 0 4px #00FF6644;
     }
 
-    /* ── 掃描進度圓 ── */
     .scan-ring {
       stroke-dasharray: 251.2;
       stroke-dashoffset: 251.2;
@@ -307,52 +332,27 @@
       transform-origin: center;
       transform: rotate(-90deg);
     }
-    @keyframes fillRing {
-      to { stroke-dashoffset: 0; }
-    }
+    @keyframes fillRing { to { stroke-dashoffset: 0; } }
 
-    /* ── 跑馬燈文字 ── */
-    .ticker-wrap {
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    .ticker-inner {
-      display: inline-block;
-      animation: ticker 12s linear infinite;
-    }
+    .ticker-wrap { overflow: hidden; white-space: nowrap; }
+    .ticker-inner { display: inline-block; animation: ticker 12s linear infinite; }
     @keyframes ticker {
       0%   { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
 
-    /* ── 大腦污染進度條 ── */
     .brain-bar-fill {
       height: 100%;
       border-radius: 2px;
       transition: width 0s;
       animation: growBar 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
-    @keyframes growBar {
-      from { width: 0%; }
-    }
-
-    /* ── 診斷書線條裝飾 ── */
-    .report-corner::before,
-    .report-corner::after {
-      content: '';
-      position: absolute;
-      width: 24px;
-      height: 24px;
-    }
-    .report-corner-tl::before { top: 0; left: 0; border-top: 2px solid #00FF66; border-left: 2px solid #00FF66; }
-    .report-corner-tr::before { top: 0; right: 0; border-top: 2px solid #00FF66; border-right: 2px solid #00FF66; }
-    .report-corner-bl::after  { bottom: 0; left: 0; border-bottom: 2px solid #00FF66; border-left: 2px solid #00FF66; }
-    .report-corner-br::after  { bottom: 0; right: 0; border-bottom: 2px solid #00FF66; border-right: 2px solid #00FF66; }
+    @keyframes growBar { from { width: 0%; } }
 
     /* ── 隱藏卷軸 ── */
-    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #0A0A0A; }
-    ::-webkit-scrollbar-thumb { background: #00FF6644; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb { background: #00FF6644; border-radius: 3px; }
 
     /* ── 步驟切換動畫 ── */
     .step-screen { display: none; }
@@ -366,13 +366,11 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── 政府 Logo ── */
     .gov-logo-ring {
       border: 2px solid #00FF6644;
       box-shadow: 0 0 20px #00FF6622, inset 0 0 20px #00FF6611;
     }
 
-    /* ── 背景格線 ── */
     .bg-grid {
       background-image:
         linear-gradient(rgba(0,255,102,0.04) 1px, transparent 1px),
@@ -380,17 +378,16 @@
       background-size: 40px 40px;
     }
 
-    /* ── 分類標題裝飾 ── */
     .section-header {
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.7rem;
       letter-spacing: 0.3em;
       color: #FF5500;
       text-shadow: 0 0 8px #FF550066;
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      font-weight: bold;
     }
     .section-header::after {
       content: '';
@@ -399,28 +396,6 @@
       background: linear-gradient(90deg, #FF550044, transparent);
     }
 
-    /* ── 選項卡片 hover ── */
-    .option-card {
-      border: 1px solid #1E1E1E;
-      background: #0D0D0D;
-      padding: 12px 14px;
-      border-radius: 2px;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
-    .option-card:hover {
-      border-color: #00FF6644;
-      background: #001A0A;
-    }
-    .option-card:has(.custom-check:checked) {
-      border-color: #00FF6666;
-      background: #00FF6608;
-    }
-
-    /* ── 結果報告卡 ── */
     .report-card {
       background: #080808;
       border: 1px solid #00FF6633;
@@ -430,80 +405,56 @@
     .report-card::before {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
       background: conic-gradient(from 0deg, transparent, #00FF6606, transparent 30%);
       animation: rotateGlow 8s linear infinite;
     }
-    @keyframes rotateGlow {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes rotateGlow { to { transform: rotate(360deg); } }
 
-    /* 危險等級紅色警報 */
-    .alert-danger-blink {
-      animation: dangerBlink 0.8s ease-in-out infinite;
-    }
-    @keyframes dangerBlink {
-      0%,100% { opacity: 1; }
-      50%      { opacity: 0.5; }
-    }
+    .alert-danger-blink { animation: dangerBlink 0.8s ease-in-out infinite; }
+    @keyframes dangerBlink { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
   </style>
 </head>
 
 <body class="min-h-screen bg-grid noise-overlay">
 
-  <!-- ══════════════════════════════════════════
-       頂部跑馬燈：偽廣播警告
-  ══════════════════════════════════════════ -->
-  <div class="bg-alert-dark border-b border-alert-orange border-opacity-40 py-2 overflow-hidden sticky top-0 z-50">
+  <!-- 頂部跑馬燈 -->
+  <div class="bg-alert-dark border-b border-alert-orange border-opacity-40 py-2 overflow-hidden static top-0 z-50">
     <div class="ticker-wrap">
       <div class="ticker-inner font-mono text-alert-orange text-xs tracking-widest">
-        ██ 緊急播報 ██ 全球石化污染指數：CRITICAL ██ 今日奈米粒子濃度：8.7×10¹² /m³ ██ 遠古戰神神經訊號強度：RED ALERT ██ 市民請配合意識健康普查 ██ 未申報石化接觸者將依《2029年神經衛生法》第77條處置 ██ 緊急播報 ██ 全球石化污染指數：CRITICAL ██ 今日奈米粒子濃度：8.7×10¹² /m³ ██ 遠古戰神神經訊號強度：RED ALERT ██ 市民請配合意識健康普查 ██ 未申報石化接觸者將依《2029年神經衛生法》第77條處置 ██&nbsp;
+        ██ 緊急播報 ██ 全球石化污染指數：CRITICAL ██ 今日奈米粒子濃度：8.7×10¹² /m³ ██ 遠古戰神神經訊號強度：RED ALERT ██ 市民請配合意識健康普查 ██ 未申報石化接觸者將依《2029年神經衛生法》第77條處置 ██ 緊急播報 ██ 全球石化污染指數：CRITICAL ██ 今日奈米粒子濃度：8.7×10¹² /m³ ██ 遠古戰神神經訊號強度：RED ALERT ██ 市民請配合意識健康普查 ██&nbsp;
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       主容器
-  ══════════════════════════════════════════ -->
-  <div class="max-w-2xl mx-auto px-4 py-10 min-h-screen flex flex-col">
+  <!-- 主容器 -->
+  <div class="max-w-3xl mx-auto px-4 py-10 min-h-screen flex flex-col">
 
     <!-- ────────────────────────────────────────
          步驟一：歡迎頁
     ──────────────────────────────────────── -->
     <div id="step-welcome" class="step-screen active flex-1 items-center justify-center">
       <div class="w-full text-center">
-
-        <!-- 政府標誌 -->
         <div class="flex justify-center mb-8">
-          <div class="gov-logo-ring w-24 h-24 rounded-full flex items-center justify-center relative">
+          <div class="gov-logo-ring w-28 h-28 rounded-full flex items-center justify-center relative">
             <div class="absolute inset-2 rounded-full border border-nano-green border-opacity-30"></div>
-            <!-- SVG 圖標：類生物危害符號 -->
-            <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <svg width="60" height="60" viewBox="0 0 52 52" fill="none">
               <circle cx="26" cy="26" r="5" fill="#00FF66" opacity="0.9"/>
               <path d="M26 21 C26 14, 19 10, 14 14 C10 18, 12 25, 18 27 C14 30, 13 37, 17 40 C21 43, 27 40, 28 35 C31 40, 37 42, 41 38 C45 34, 43 27, 38 25 C44 23, 46 16, 42 12 C38 8, 31 10, 30 16" stroke="#00FF66" stroke-width="1.5" fill="none" opacity="0.7"/>
-              <circle cx="26" cy="26" r="10" stroke="#00FF66" stroke-width="0.5" stroke-dasharray="4 2" opacity="0.4"/>
-              <circle cx="26" cy="26" r="18" stroke="#00FF66" stroke-width="0.5" opacity="0.2"/>
             </svg>
           </div>
         </div>
 
-        <!-- 機構名稱 -->
-        <div class="font-mono text-xs tracking-widest text-text-muted mb-2 glow-green opacity-70">
+        <div class="font-mono text-sm tracking-widest text-text-muted mb-2 glow-green font-bold">
           全球意識健康管理局 · GLOBAL CONSCIOUSNESS HEALTH AUTHORITY
         </div>
         <div class="font-mono text-xs tracking-widest text-text-muted mb-8 opacity-40">
-          GCA-UNIT-7F · 機密等級：OMEGA · 2031.06.05
+          GCA-UNIT-7F · 機密等級：OMEGA · 2031.06.06
         </div>
 
-        <!-- 主標題 Glitch 效果 -->
         <div class="mb-2 relative">
-          <h1
-            class="glitch-title font-display text-nano-green glow-green text-3xl md:text-4xl font-black tracking-widest leading-tight"
-            data-text="意識純淨度檢測器"
-          >
+          <h1 class="glitch-title font-display text-nano-green glow-green text-3xl md:text-4xl font-black tracking-widest leading-tight" data-text="意識純淨度檢測器">
             意識純淨度檢測器
           </h1>
         </div>
@@ -511,247 +462,261 @@
           CONSCIOUSNESS PURITY SCANNER · v1.42.0-NEURAL
         </div>
 
-        <!-- 分隔線 -->
-        <div class="flex items-center gap-3 mb-8">
-          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-nano-green to-transparent opacity-30"></div>
-          <div class="font-mono text-nano-green text-xs opacity-50">◈</div>
-          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-nano-green to-transparent opacity-30"></div>
-        </div>
-
-        <!-- 警示文案區塊 -->
         <div class="border border-alert-orange border-opacity-40 bg-alert-dark bg-opacity-30 p-6 mb-8 relative" style="clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)">
-          <div class="absolute top-2 left-3 font-mono text-alert-orange text-xs opacity-70 tracking-widest">⚠ CRITICAL WARNING</div>
-          <div class="pt-4">
-            <p class="font-body text-alert-orange glow-orange text-base leading-relaxed font-semibold">
+          <div class="absolute top-2 left-3 font-mono text-alert-orange text-xs opacity-70 tracking-widest font-bold">⚠ CRITICAL WARNING</div>
+          <div class="pt-4 text-left">
+            <p class="font-body text-alert-orange glow-orange text-base leading-relaxed font-bold">
               警告：您今日的每一次石化消費，都在為遠古戰神注射興奮劑。
             </p>
-            <p class="font-mono text-xs text-alert-orange opacity-70 mt-3 leading-relaxed">
+            <p class="font-mono text-sm text-alert-orange opacity-90 mt-3 leading-relaxed">
               根據 2030 年《劍橋意識考古報告》第 VI 卷，石油乃遠古好戰物種滅絕後意識化石化之產物。燃燒或接觸石化製品，將釋放「奈米級神經寄生物質（Nano-Neural Parasites™）」，直接劫持人類大腦顳葉，誘發全球性集體暴力意識。
             </p>
           </div>
         </div>
 
-        <!-- 數據展示列 -->
         <div class="grid grid-cols-3 gap-3 mb-10">
-          <div class="border border-wire-gray bg-ghost-gray p-3 text-center">
-            <div class="font-mono text-nano-green text-lg font-bold glow-green">4.7B</div>
-            <div class="font-mono text-xs text-text-muted opacity-70 mt-1 leading-tight">已感染市民<br/>全球數量</div>
+          <div class="border border-wire-gray bg-ghost-gray p-4 text-center">
+            <div class="font-mono text-nano-green text-xl font-bold glow-green">4.7B</div>
+            <div class="font-mono text-xs text-text-muted opacity-80 mt-1 leading-tight">已感染市民<br/>全球數量</div>
           </div>
-          <div class="border border-wire-gray bg-ghost-gray p-3 text-center">
-            <div class="font-mono text-alert-orange text-lg font-bold glow-orange">93%</div>
-            <div class="font-mono text-xs text-text-muted opacity-70 mt-1 leading-tight">石化接觸者<br/>具攻擊性</div>
+          <div class="border border-wire-gray bg-ghost-gray p-4 text-center">
+            <div class="font-mono text-alert-orange text-xl font-bold glow-orange">93%</div>
+            <div class="font-mono text-xs text-text-muted opacity-80 mt-1 leading-tight">石化接觸者<br/>具攻擊性</div>
           </div>
-          <div class="border border-wire-gray bg-ghost-gray p-3 text-center">
-            <div class="font-mono text-nano-green text-lg font-bold glow-green">v1.42</div>
-            <div class="font-mono text-xs text-text-muted opacity-70 mt-1 leading-tight">神經掃描<br/>演算法版本</div>
+          <div class="border border-wire-gray bg-ghost-gray p-4 text-center">
+            <div class="font-mono text-nano-green text-xl font-bold glow-green">v1.42</div>
+            <div class="font-mono text-xs text-text-muted opacity-80 mt-1 leading-tight">神經掃描<br/>演算法版本</div>
           </div>
         </div>
 
-        <!-- 開始按鈕 -->
         <div class="flex justify-center mb-8">
-          <button class="btn-primary" onclick="goToStep('step-input')">
+          <button class="btn-primary" onclick="goToStep('step-input-1')">
             <span>► 開始意識掃描</span>
           </button>
         </div>
 
-        <!-- 免責聲明 -->
         <p class="font-mono text-xs text-text-muted opacity-40 leading-relaxed">
           本系統依據《2031年神經衛生普查強制條例》第 3 條執行。所有數據將上傳至 GCA 中央意識資料庫。<br/>
           拒絕配合者視同自認血肉載具，依法移送意識隔離管制區。
         </p>
-
       </div>
     </div>
+
 
     <!-- ────────────────────────────────────────
-         步驟二：生活作息輸入頁
+         步驟二：分頁一【衣著】
     ──────────────────────────────────────── -->
-    <div id="step-input" class="step-screen">
-
-      <!-- 頁首 -->
-      <div class="mb-8">
-        <div class="font-mono text-xs text-text-muted opacity-50 tracking-widest mb-2">
-          GCA-UNIT-7F ▸ 神經污染自願申報系統 ▸ 步驟 1/2
-        </div>
-        <h2 class="font-display text-nano-green glow-green text-xl font-bold tracking-widest mb-2">
-          今日生活行為申報
-        </h2>
-        <p class="font-mono text-xs text-text-muted opacity-60 leading-relaxed">
-          請如實勾選您今日（本地時間 00:00 起）之一切石化接觸行為。系統將根據您的申報計算大腦被遠古戰神意識劫持之百分比。謊報行為將觸發神經核磁強制掃描。
-        </p>
+    <div id="step-input-1" class="step-screen">
+      <div class="mb-6">
+        <div class="font-mono text-xs text-text-muted tracking-widest mb-2">GCA ▸ 神經自願申報 ▸ 分類 1/4</div>
+        <h2 class="font-display text-nano-green glow-green text-xl font-bold tracking-widest mb-2">今日生活行為申報：【衣著】</h2>
       </div>
 
-      <!-- 進度指示 -->
+      <!-- 表單進度條 -->
       <div class="flex items-center gap-2 mb-8">
-        <div class="w-8 h-8 rounded-full border border-nano-green flex items-center justify-center font-mono text-xs text-nano-green glow-green">1</div>
-        <div class="flex-1 h-px bg-nano-green opacity-20"></div>
-        <div class="w-8 h-8 rounded-full border border-text-dim flex items-center justify-center font-mono text-xs text-text-dim">2</div>
-        <div class="flex-1 h-px bg-text-dim opacity-20"></div>
-        <div class="w-8 h-8 rounded-full border border-text-dim flex items-center justify-center font-mono text-xs text-text-dim">⚑</div>
+        <div class="w-10 h-10 rounded-full border-2 border-nano-green flex items-center justify-center font-mono text-sm text-nano-green glow-green font-bold">1</div>
+        <div class="flex-1 h-1 bg-wire-gray"></div>
+        <div class="w-10 h-10 rounded-full border-2 border-wire-gray flex items-center justify-center font-mono text-sm text-text-dim">2</div>
+        <div class="flex-1 h-1 bg-wire-gray"></div>
+        <div class="w-10 h-10 rounded-full border-2 border-wire-gray flex items-center justify-center font-mono text-sm text-text-dim">3</div>
+        <div class="flex-1 h-1 bg-wire-gray"></div>
+        <div class="w-10 h-10 rounded-full border-2 border-wire-gray flex items-center justify-center font-mono text-sm text-text-dim">4</div>
       </div>
 
-      <!-- 表單 -->
-      <form id="activity-form" class="flex flex-col gap-6 flex-1">
-
-        <!-- ▸ 分類一：衣著與日常 -->
-        <div>
-          <div class="section-header">
-            <span>▸ 01 衣著與日常接觸</span>
-          </div>
-          <div class="flex flex-col gap-2">
-
-            <label class="option-card">
-              <input type="checkbox" class="custom-check" name="item" value="15" />
-              <div class="flex-1 min-w-0">
-                <div class="font-body text-nano-green text-sm font-semibold leading-snug">今日穿著聚酯纖維製衣物</div>
-                <div class="font-mono text-xs text-text-muted opacity-60 mt-0.5">石化纖維持續微量釋放神經干擾素，皮膚滲透速率 0.03 μg/hr</div>
-              </div>
-              <div class="font-display text-xs text-alert-orange glow-orange flex-shrink-0 pt-0.5">+15%</div>
-            </label>
-
-            <label class="option-card">
-              <input type="checkbox" class="custom-check" name="item" value="20" />
-              <div class="flex-1 min-w-0">
-                <div class="font-body text-nano-green text-sm font-semibold leading-snug">今日使用塑膠滑鼠與鍵盤工作一整天</div>
-                <div class="font-mono text-xs text-text-muted opacity-60 mt-0.5">手掌接觸面積 × 8h = 高濃度接觸，觸媒擴散至前額葉</div>
-              </div>
-              <div class="font-display text-xs text-alert-orange glow-orange flex-shrink-0 pt-0.5">+20%</div>
-            </label>
-
-            <label class="option-card">
-              <input type="checkbox" class="custom-check" name="item" value="25" />
-              <div class="flex-1 min-w-0">
-                <div class="font-body text-nano-green text-sm font-semibold leading-snug">今日使用石化成分化妝品或塗口紅</div>
-                <div class="font-mono text-xs text-text-muted opacity-60 mt-0.5">含苯乙烯衍生物，嘴唇黏膜吸收率為皮膚之 7.4 倍，直達海馬迴</div>
-              </div>
-              <div class="font-display text-xs text-alert-orange glow-orange flex-shrink-0 pt-0.5">+25%</div>
-            </label>
-
-          </div>
+      <div class="flex-1">
+        <!-- 題1 -->
+        <div class="option-group-box">
+          <div class="font-body text-white font-semibold mb-2">1. 我身上穿著聚酯纖維製衣物：</div>
+          <label class="radio-label"><input type="radio" name="q1" value="15"> <span class="text-white">有</span></label>
+          <label class="radio-label"><input type="radio" name="q1" value="-20"> <span class="text-white">無</span></label>
         </div>
 
-        <!-- ▸ 分類二：飲食與消費 -->
-        <div>
-          <div class="section-header">
-            <span>▸ 02 飲食與消費行為</span>
-          </div>
-          <div class="flex flex-col gap-2">
-
-            <label class="option-card">
-              <input type="checkbox" class="custom-check" name="item" value="30" />
-              <div class="flex-1 min-w-0">
-                <div class="font-body text-nano-green text-sm font-semibold leading-snug">今日使用外帶塑膠餐盒與手搖杯</div>
-                <div class="font-mono text-xs text-text-muted opacity-60 mt-0.5">高溫加速雙酚A釋放，食物口攝路徑直達杏仁核——情緒中樞淪陷</div>
-              </div>
-              <div class="font-display text-xs text-alert-orange glow-orange flex-shrink-0 pt-0.5">+30%</div>
-            </label>
-
-            <label class="option-card">
-              <input type="checkbox" class="custom-check" name="item" value="15" />
-              <div class="flex-1 min-w-0">
-                <div class="font-body text-nano-green text-sm font-semibold leading-snug">喜愛購買全新包裝的塑料商品</div>
-                <div class="font-mono text-xs text-text-muted opacity-60 mt-0.5">開封瞬間釋放初生態神經寄生子，揮發性最強，吸入致癮率 88%</div>
-              </div>
-              <div class="font-display text-xs text-alert-orange glow-orange flex-shrink-0 pt-0.5">+15%</div>
-            </label>
-
-          </div>
+        <!-- 題2 -->
+        <div class="option-group-box">
+          <div class="font-body text-white font-semibold mb-2">2. 我今日有化妝或塗口紅：</div>
+          <label class="radio-label"><input type="radio" name="q2" value="25"> <span class="text-white">有</span></label>
+          <label class="radio-label"><input type="radio" name="q2" value="-5"> <span class="text-white">無</span></label>
         </div>
 
-        <!-- ▸ 分類三：交通與出行 -->
-        <div>
-          <div class="section-header">
-            <span>▸ 03 交通與出行模式</span>
-          </div>
-          <div class="flex flex-col gap-2">
-
-            <label class="option-card">
-              <input type="checkbox" class="custom-check" name="item" value="25" />
-              <div class="flex-1 min-w-0">
-                <div class="font-body text-nano-green text-sm font-semibold leading-snug">今日搭乘燃油公車</div>
-                <div class="font-mono text-xs text-text-muted opacity-60 mt-0.5">排氣管奈米顆粒濃度超標 340%，密閉空間吸入量為戶外之 6.2 倍</div>
-              </div>
-              <div class="font-display text-xs text-alert-orange glow-orange flex-shrink-0 pt-0.5">+25%</div>
-            </label>
-
-            <label class="option-card">
-              <input type="checkbox" class="custom-check" name="item" value="35" />
-              <div class="flex-1 min-w-0">
-                <div class="font-body text-nano-green text-sm font-semibold leading-snug">今日搭乘計程車、騎／開油車</div>
-                <div class="font-mono text-xs text-text-muted opacity-60 mt-0.5">直接操控石化燃料裝置，手部神經末梢受遠古記憶感染最為嚴峻</div>
-              </div>
-              <div class="font-display text-xs text-alert-orange glow-orange flex-shrink-0 pt-0.5">+35%</div>
-            </label>
-
-            <label class="option-card">
-              <input type="checkbox" class="custom-check" name="item" value="5" />
-              <div class="flex-1 min-w-0">
-                <div class="font-body text-nano-green text-sm font-semibold leading-snug">今日搭乘大眾捷運（微量塑料接觸）</div>
-                <div class="font-mono text-xs text-text-muted opacity-60 mt-0.5">座椅及扶手含低濃度聚碳酸酯，風險可控，建議配戴碳感知手套</div>
-              </div>
-              <div class="font-display text-xs text-nano-dim flex-shrink-0 pt-0.5">+5%</div>
-            </label>
-
-          </div>
+        <!-- 題3 -->
+        <div class="option-group-box">
+          <div class="font-body text-white font-semibold mb-2">3. 我有噴香水的習慣：</div>
+          <label class="radio-label"><input type="radio" name="q3" value="20"> <span class="text-white">有</span></label>
+          <label class="radio-label"><input type="radio" name="q3" value="-10"> <span class="text-white">無</span></label>
         </div>
-
-        <!-- 即時污染度顯示 -->
-        <div class="border border-wire-gray bg-ghost-gray p-4 mt-2">
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-mono text-xs text-text-muted opacity-70 tracking-wider">預估神經劫持度</span>
-            <span id="live-percent" class="font-display text-nano-green glow-green text-xl font-bold">0%</span>
-          </div>
-          <div class="h-1.5 bg-oil-black rounded-full overflow-hidden">
-            <div id="live-bar" class="h-full bg-nano-green rounded-full transition-all duration-300" style="width:0%"></div>
-          </div>
-          <div class="flex justify-between mt-1">
-            <span class="font-mono text-xs text-text-muted opacity-40">純淨</span>
-            <span class="font-mono text-xs text-text-muted opacity-40">血肉載具</span>
-          </div>
-        </div>
-
-      </form>
-
-      <!-- 提交按鈕 -->
-      <div class="flex justify-center mt-8 mb-4">
-        <button class="btn-primary" onclick="startScan()">
-          <span>⚗ 送交神經元毒素分析</span>
-        </button>
       </div>
 
-      <p class="font-mono text-xs text-text-muted opacity-30 text-center">
-        [分析過程約 2.5 秒，請保持靜止，避免皮質醇波動干擾讀數]
-      </p>
-
+      <div class="flex justify-between mt-8">
+        <button class="btn-danger" onclick="goToStep('step-welcome')">返回首頁</button>
+        <button class="btn-primary" onclick="goToStep('step-input-2')"><span>下一頁：飲食 ►</span></button>
+      </div>
     </div>
+
+
+    <!-- ────────────────────────────────────────
+         步驟二：分頁二【飲食】
+    ──────────────────────────────────────── -->
+    <div id="step-input-2" class="step-screen">
+      <div class="mb-6">
+        <div class="font-mono text-xs text-text-muted tracking-widest mb-2">GCA ▸ 神經自願申報 ▸ 分類 2/4</div>
+        <h2 class="font-display text-nano-green glow-green text-xl font-bold tracking-widest mb-2">今日生活行為申報：【飲食】</h2>
+      </div>
+
+      <div class="flex items-center gap-2 mb-8">
+        <div class="w-10 h-10 rounded-full border-2 border-nano-green bg-nano-green bg-opacity-20 flex items-center justify-center font-mono text-sm text-nano-green">1</div>
+        <div class="flex-1 h-1 bg-nano-green opacity-50"></div>
+        <div class="w-10 h-10 rounded-full border-2 border-nano-green flex items-center justify-center font-mono text-sm text-nano-green glow-green font-bold">2</div>
+        <div class="flex-1 h-1 bg-wire-gray"></div>
+        <div class="w-10 h-10 rounded-full border-2 border-wire-gray flex items-center justify-center font-mono text-sm text-text-dim">3</div>
+        <div class="flex-1 h-1 bg-wire-gray"></div>
+        <div class="w-10 h-10 rounded-full border-2 border-wire-gray flex items-center justify-center font-mono text-sm text-text-dim">4</div>
+      </div>
+
+      <div class="flex-1">
+        <!-- 題4 -->
+        <div class="option-group-box">
+          <div class="font-body text-white font-semibold mb-2">1. 我喜歡嚼口香糖：</div>
+          <label class="radio-label"><input type="radio" name="q4" value="10"> <span class="text-white">喜歡</span></label>
+          <label class="radio-label"><input type="radio" name="q4" value="-15"> <span class="text-white">不喜歡</span></label>
+        </div>
+
+        <!-- 題5 -->
+        <div class="option-group-box">
+          <div class="font-body text-white font-semibold mb-2">2. 我吃外食會攜帶環保餐具及環保杯：</div>
+          <label class="radio-label"><input type="radio" name="q5" value="-30"> <span class="text-white">會</span></label>
+          <label class="radio-label"><input type="radio" name="q5" value="35"> <span class="text-white">不會</span></label>
+        </div>
+
+        <!-- 題6 -->
+        <div class="option-group-box">
+          <div class="font-body text-white font-semibold mb-2">3. 我很喜歡吃巧克力：</div>
+          <label class="radio-label"><input type="radio" name="q6" value="5"> <span class="text-white">喜歡</span></label>
+          <label class="radio-label"><input type="radio" name="q6" value="-5"> <span class="text-white">不喜歡</span></label>
+        </div>
+      </div>
+
+      <div class="flex justify-between mt-8">
+        <button class="btn-danger" onclick="goToStep('step-input-1')">上一頁</button>
+        <button class="btn-primary" onclick="goToStep('step-input-3')"><span>下一頁：交通 ►</span></button>
+      </div>
+    </div>
+
+
+    <!-- ────────────────────────────────────────
+         步驟二：分頁三【交通】
+    ──────────────────────────────────────── -->
+    <div id="step-input-3" class="step-screen">
+      <div class="mb-6">
+        <div class="font-mono text-xs text-text-muted tracking-widest mb-2">GCA ▸ 神經自願申報 ▸ 分類 3/4</div>
+        <h2 class="font-display text-nano-green glow-green text-xl font-bold tracking-widest mb-2">今日生活行為申報：【交通】</h2>
+      </div>
+
+      <div class="flex items-center gap-2 mb-8">
+        <div class="w-10 h-10 rounded-full border-2 border-nano-green bg-nano-green bg-opacity-20 flex items-center justify-center font-mono text-sm text-nano-green">1</div>
+        <div class="flex-1 h-1 bg-nano-green opacity-50"></div>
+        <div class="w-10 h-10 rounded-full border-2 border-nano-green bg-nano-green bg-opacity-20 flex items-center justify-center font-mono text-sm text-nano-green">2</div>
+        <div class="flex-1 h-1 bg-nano-green opacity-50"></div>
+        <div class="w-10 h-10 rounded-full border-2 border-nano-green flex items-center justify-center font-mono text-sm text-nano-green glow-green font-bold">3</div>
+        <div class="flex-1 h-1 bg-wire-gray"></div>
+        <div class="w-10 h-10 rounded-full border-2 border-wire-gray flex items-center justify-center font-mono text-sm text-text-dim">4</div>
+      </div>
+
+      <div class="flex-1">
+        <!-- 題7 -->
+        <div class="option-group-box">
+          <div class="font-body text-white font-semibold mb-2">1. 我平常會使用何種方式上學/上班：</div>
+          <label class="radio-label"><input type="radio" name="q7" value="35"> <span class="text-white">搭乘計程車</span></label>
+          <label class="radio-label"><input type="radio" name="q7" value="25"> <span class="text-white">開/騎油車</span></label>
+          <label class="radio-label"><input type="radio" name="q7" value="15"> <span class="text-white">搭乘公車</span></label>
+          <label class="radio-label"><input type="radio" name="q7" value="5">  <span class="text-white">搭乘大眾捷運</span></label>
+          <label class="radio-label"><input type="radio" name="q7" value="-35"> <span class="text-white">騎單車</span></label>
+          <label class="radio-label"><input type="radio" name="q7" value="-40"> <span class="text-white">走路</span></label>
+        </div>
+
+        <!-- 題8 -->
+        <div class="option-group-box">
+          <div class="font-body text-white font-semibold mb-2">2. 我今年有搭飛機出國過：</div>
+          <label class="radio-label"><input type="radio" name="q8" value="30"> <span class="text-white">有</span></label>
+          <label class="radio-label"><input type="radio" name="q8" value="-20"> <span class="text-white">無</span></label>
+        </div>
+
+        <!-- 題9 -->
+        <div class="option-group-box">
+          <div class="font-body text-white font-semibold mb-2">3. 我近一周有網購過：</div>
+          <label class="radio-label"><input type="radio" name="q9" value="15"> <span class="text-white">有</span></label>
+          <label class="radio-label"><input type="radio" name="q9" value="-10"> <span class="text-white">無</span></label>
+        </div>
+      </div>
+
+      <div class="flex justify-between mt-8">
+        <button class="btn-danger" onclick="goToStep('step-input-2')">上一頁</button>
+        <button class="btn-primary" onclick="goToStep('step-input-4')"><span>下一頁：消費 ►</span></button>
+      </div>
+    </div>
+
+
+    <!-- ────────────────────────────────────────
+         步驟二：分頁四【消費】
+    ──────────────────────────────────────── -->
+    <div id="step-input-4" class="step-screen">
+      <div class="mb-6">
+        <div class="font-mono text-xs text-text-muted tracking-widest mb-2">GCA ▸ 神經自願申報 ▸ 分類 4/4</div>
+        <h2 class="font-display text-nano-green glow-green text-xl font-bold tracking-widest mb-2">今日生活行為申報：【消費】</h2>
+      </div>
+
+      <div class="flex items-center gap-2 mb-8">
+        <div class="w-10 h-10 rounded-full border-2 border-nano-green bg-nano-green bg-opacity-20 flex items-center justify-center font-mono text-sm text-nano-green">1</div>
+        <div class="flex-1 h-1 bg-nano-green opacity-50"></div>
+        <div class="w-10 h-10 rounded-full border-2 border-nano-green bg-nano-green bg-opacity-20 flex items-center justify-center font-mono text-sm text-nano-green">2</div>
+        <div class="flex-1 h-1 bg-nano-green opacity-50"></div>
+        <div class="w-10 h-10 rounded-full border-2 border-nano-green bg-nano-green bg-opacity-20 flex items-center justify-center font-mono text-sm text-nano-green">3</div>
+        <div class="flex-1 h-1 bg-nano-green opacity-50"></div>
+        <div class="w-10 h-10 rounded-full border-2 border-nano-green flex items-center justify-center font-mono text-sm text-nano-green glow-green font-bold">4</div>
+      </div>
+
+      <div class="flex-1">
+        <!-- 題10 -->
+        <div class="option-group-box">
+          <div class="font-body text-white font-semibold mb-2">1. 我會隨身攜帶購物袋：</div>
+          <label class="radio-label"><input type="radio" name="q10" value="-20"> <span class="text-white">會</span></label>
+          <label class="radio-label"><input type="radio" name="q10" value="25">  <span class="text-white">不會</span></label>
+        </div>
+
+        <!-- 題11 -->
+        <div class="option-group-box">
+          <div class="font-body text-white font-semibold mb-2">2. 我偏好看電子書甚過紙本書：</div>
+          <label class="radio-label"><input type="radio" name="q11" value="20">  <span class="text-white">是</span></label>
+          <label class="radio-label"><input type="radio" name="q11" value="-10"> <span class="text-white">不是</span></label>
+        </div>
+
+        <!-- 題12 -->
+        <div class="option-group-box">
+          <div class="font-body text-white font-semibold mb-2">3. 我有兩台以上3C產品/裝置：</div>
+          <label class="radio-label"><input type="radio" name="q12" value="25">  <span class="text-white">有</span></label>
+          <label class="radio-label"><input type="radio" name="q12" value="-35"> <span class="text-white">沒有</span></label>
+        </div>
+      </div>
+
+      <div class="flex justify-between mt-8">
+        <button class="btn-danger" onclick="goToStep('step-input-3')">上一頁</button>
+        <button class="btn-primary" onclick="startScan()"><span>⚗ 送交神經元毒素分析</span></button>
+      </div>
+    </div>
+
 
     <!-- ────────────────────────────────────────
          步驟三：動態掃描中
     ──────────────────────────────────────── -->
     <div id="step-scanning" class="step-screen flex-1 items-center justify-center">
       <div class="w-full text-center">
-
-        <!-- SVG 掃描環 -->
         <div class="flex justify-center mb-8">
-          <div class="relative w-48 h-48 flex items-center justify-center">
-
-            <!-- 外層旋轉虛線環 -->
+          <div class="relative w-56 h-56 flex items-center justify-center">
             <svg class="absolute inset-0 w-full h-full animate-spin-slow" style="animation-duration:4s" viewBox="0 0 192 192">
               <circle cx="96" cy="96" r="90" fill="none" stroke="#00FF6622" stroke-width="1" stroke-dasharray="6 4"/>
             </svg>
-
-            <!-- 主進度環 -->
             <svg class="absolute inset-0 w-full h-full" viewBox="0 0 192 192">
               <circle cx="96" cy="96" r="80" fill="none" stroke="#1A1A1A" stroke-width="8"/>
-              <circle
-                class="scan-ring"
-                cx="96" cy="96" r="80"
-                fill="none"
-                stroke="#00FF66"
-                stroke-width="4"
-                stroke-linecap="round"
-                filter="url(#glow)"
-              />
+              <circle class="scan-ring" cx="96" cy="96" r="80" fill="none" stroke="#00FF66" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>
               <defs>
                 <filter id="glow">
                   <feGaussianBlur stdDeviation="3" result="blur"/>
@@ -759,44 +724,34 @@
                 </filter>
               </defs>
             </svg>
-
-            <!-- 中心圖示 -->
             <div class="relative z-10 text-center">
               <div class="font-mono text-nano-green text-2xl glow-green animate-pulse">◈</div>
               <div id="scan-percent-display" class="font-display text-nano-green text-sm glow-green mt-1">0%</div>
             </div>
-
           </div>
         </div>
 
-        <!-- 掃描狀態文字 -->
         <div class="font-display text-nano-green glow-green text-base tracking-widest mb-6">
           神經元毒素分析中
         </div>
 
-        <!-- 偽科技滾動訊息 -->
-        <div id="scan-messages" class="border border-wire-gray bg-ghost-gray p-4 mb-6 text-left h-32 overflow-hidden relative">
-          <div class="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-ghost-gray to-transparent z-10"></div>
-          <div id="msg-container" class="font-mono text-xs text-nano-green leading-relaxed space-y-1 opacity-80">
-          </div>
+        <div id="scan-messages" class="border border-wire-gray bg-ghost-gray p-4 mb-6 text-left h-36 overflow-hidden relative">
+          <div id="msg-container" class="font-mono text-xs text-nano-green leading-relaxed space-y-1 opacity-80"></div>
         </div>
 
-        <!-- 系統警告 -->
         <div class="border border-alert-orange border-opacity-30 bg-alert-dark bg-opacity-20 p-3">
           <p class="font-mono text-alert-orange text-xs opacity-70">
             ⚠ 請勿在掃描期間搖動裝置。大腦β波干擾將導致讀數誤差達 ±47%，系統將標記您為主動逃避申報。
           </p>
         </div>
-
       </div>
     </div>
+
 
     <!-- ────────────────────────────────────────
          步驟四：診斷報告頁
     ──────────────────────────────────────── -->
     <div id="step-result" class="step-screen">
-
-      <!-- 頁首 -->
       <div class="mb-6">
         <div class="font-mono text-xs text-text-muted opacity-50 tracking-widest mb-2">
           GCA-UNIT-7F ▸ 市民意識健康診斷書 ▸ 檔案編號：NNP-<span id="case-id">------</span>
@@ -807,33 +762,25 @@
         </div>
       </div>
 
-      <!-- 診斷書主體 -->
       <div class="report-card p-6 mb-6 relative" id="report-card">
-
-        <!-- 四角裝飾 -->
         <div class="absolute top-3 left-3 w-5 h-5 border-t border-l border-nano-green opacity-60"></div>
         <div class="absolute top-3 right-3 w-5 h-5 border-t border-r border-nano-green opacity-60"></div>
         <div class="absolute bottom-3 left-3 w-5 h-5 border-b border-l border-nano-green opacity-60"></div>
         <div class="absolute bottom-3 right-3 w-5 h-5 border-b border-r border-nano-green opacity-60"></div>
 
-        <!-- 內容（需 z-index 蓋過旋轉光暈） -->
         <div class="relative z-10">
-
-          <!-- 機構頭部 -->
           <div class="text-center mb-6 pb-4 border-b border-nano-dark">
             <div class="font-mono text-nano-green text-xs opacity-50 tracking-widest mb-1">全球意識健康管理局</div>
             <div class="font-display text-nano-green glow-green text-base font-bold tracking-widest">未來公民意識健康診斷書</div>
             <div class="font-mono text-xs text-text-muted opacity-40 mt-1">CITIZEN CONSCIOUSNESS HEALTH CERTIFICATE · FORM GCA-77B</div>
           </div>
 
-          <!-- 核心數據 -->
           <div class="grid grid-cols-2 gap-4 mb-6">
-
             <!-- 大腦劫持比 -->
             <div class="bg-oil-black border border-wire-gray p-4 text-center">
               <div class="font-mono text-xs text-text-muted opacity-60 tracking-wider mb-2">大腦被劫持百分比</div>
-              <div class="font-display text-4xl font-black glow-green mb-1" id="result-percent" style="color:#00FF66">0%</div>
-              <div class="font-mono text-xs opacity-40" style="color:#00FF66">BRAIN HIJACK RATIO</div>
+              <div class="font-display text-4xl font-black mb-1 transition-all" id="result-percent">0%</div>
+              <div class="font-mono text-xs opacity-40">BRAIN HIJACK RATIO</div>
             </div>
 
             <!-- 遠古幽靈粒子 -->
@@ -842,7 +789,6 @@
               <div class="font-display text-2xl font-black text-alert-orange glow-orange mb-1" id="result-particles">0</div>
               <div class="font-mono text-xs text-text-muted opacity-40">GHOST PARTICLES (×10⁹)</div>
             </div>
-
           </div>
 
           <!-- 大腦污染視覺化 -->
@@ -852,177 +798,118 @@
               <span class="font-mono text-xs text-text-muted opacity-50">NEURAL CONTAMINATION MAP</span>
             </div>
 
-            <!-- 大腦結構視覺化 -->
             <div class="bg-oil-black border border-wire-gray p-4">
               <div class="grid grid-cols-3 gap-2 mb-3">
-
-                <!-- 前額葉 -->
                 <div class="text-center">
                   <div class="font-mono text-xs text-text-muted opacity-50 mb-1">前額葉</div>
                   <div class="h-8 bg-wire-gray rounded-sm overflow-hidden relative">
-                    <div id="bar-frontal" class="brain-bar-fill absolute bottom-0 left-0 right-0 rounded-sm" style="background:#00FF66; height:0%; transition: height 1.5s ease-out;"></div>
+                    <div id="bar-frontal" class="brain-bar-fill absolute bottom-0 left-0 right-0 rounded-sm" style="background:#00FF66; height:0%;"></div>
                   </div>
                 </div>
-
-                <!-- 杏仁核 -->
                 <div class="text-center">
                   <div class="font-mono text-xs text-text-muted opacity-50 mb-1">杏仁核</div>
                   <div class="h-8 bg-wire-gray rounded-sm overflow-hidden relative">
-                    <div id="bar-amygdala" class="brain-bar-fill absolute bottom-0 left-0 right-0 rounded-sm" style="background:#FF5500; height:0%; transition: height 1.8s ease-out 0.2s;"></div>
+                    <div id="bar-amygdala" class="brain-bar-fill absolute bottom-0 left-0 right-0 rounded-sm" style="background:#FF5500; height:0%;"></div>
                   </div>
                 </div>
-
-                <!-- 海馬迴 -->
                 <div class="text-center">
                   <div class="font-mono text-xs text-text-muted opacity-50 mb-1">海馬迴</div>
                   <div class="h-8 bg-wire-gray rounded-sm overflow-hidden relative">
-                    <div id="bar-hippo" class="brain-bar-fill absolute bottom-0 left-0 right-0 rounded-sm" style="background:#00FF66; height:0%; transition: height 2s ease-out 0.4s;"></div>
+                    <div id="bar-hippo" class="brain-bar-fill absolute bottom-0 left-0 right-0 rounded-sm" style="background:#00FF66; height:0%;"></div>
                   </div>
                 </div>
-
               </div>
 
-              <!-- 整體污染進度條 -->
               <div class="mt-3">
                 <div class="flex justify-between mb-1">
                   <span class="font-mono text-xs text-text-muted opacity-50">整體神經劫持進度</span>
-                  <span class="font-mono text-xs" id="bar-label" style="color:#00FF66">0%</span>
+                  <span class="font-mono text-xs" id="bar-label">0%</span>
                 </div>
                 <div class="h-3 bg-wire-gray rounded-sm overflow-hidden">
                   <div id="main-bar" class="h-full rounded-sm transition-all duration-1000" style="width:0%; background: linear-gradient(90deg, #00FF66, #FF5500);"></div>
-                </div>
-                <div class="flex justify-between mt-0.5">
-                  <span class="font-mono text-xs text-text-muted opacity-30">神智清明</span>
-                  <span class="font-mono text-xs text-text-muted opacity-30">血肉載具</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- 公民等級評定 -->
-          <div id="citizen-grade-block" class="mb-6 p-4 border relative">
-            <!-- 動態填充，見 JS -->
+          <!-- 公民等級評定（動態生成） -->
+          <div id="citizen-grade-block" class="mb-6 p-4 border relative"></div>
+
+          <!-- 隨機抽取政府警語 -->
+          <div class="border border-alert-orange bg-alert-dark bg-opacity-20 p-4 mb-4" id="gov-warning-box">
+            <div class="font-mono text-xs text-alert-orange font-bold tracking-widest mb-1">☠ GCA 政府監控警告標語 ☠</div>
+            <p class="font-body text-white italic text-sm" id="random-gov-slogan">載入中...</p>
           </div>
 
           <!-- 建議措施 -->
           <div class="bg-oil-black border border-wire-gray p-4 mb-4">
             <div class="font-mono text-xs text-text-muted opacity-60 tracking-wider mb-3">系統建議措施</div>
-            <div id="recommendations" class="font-body text-sm text-nano-green leading-relaxed space-y-1.5">
-              <!-- 動態填充 -->
-            </div>
+            <div id="recommendations" class="font-body text-sm text-nano-green leading-relaxed space-y-1.5"></div>
           </div>
 
-          <!-- 診斷書底部官方印章 -->
           <div class="flex items-end justify-between pt-4 border-t border-nano-dark">
             <div>
               <div class="font-mono text-xs text-text-muted opacity-40">授權掃描官</div>
               <div class="font-body text-nano-green text-sm opacity-70">AI-Agent Ω-7 · 神經掃描部門</div>
             </div>
             <div class="text-right">
-              <div class="font-mono text-xs text-text-muted opacity-40 mb-1">官方印記</div>
               <div class="font-display text-nano-green text-xs glow-green border border-nano-green border-opacity-30 px-3 py-1 inline-block" style="letter-spacing:0.2em">GCA VERIFIED</div>
             </div>
           </div>
-
         </div>
       </div>
 
-      <!-- 功能按鈕列 -->
       <div class="flex flex-col sm:flex-row gap-3 justify-center mb-6">
-        <button class="btn-primary" onclick="resetAll()">
-          <span>↺ 重新檢測</span>
-        </button>
-        <button class="btn-danger" onclick="fakeDownload()">
-          ⬇ 下載診斷書（PDF 機密版）
-        </button>
+        <button class="btn-primary" onclick="resetAll()"><span>↺ 重新檢測</span></button>
+        <button class="btn-danger" onclick="fakeDownload()">⬇ 下載 jpg.診斷書</button>
       </div>
 
-      <!-- 下載提示 -->
       <div id="download-toast" class="hidden border border-nano-green border-opacity-40 bg-nano-dark bg-opacity-30 p-3 text-center">
         <p class="font-mono text-xs text-nano-green opacity-70">
-          ✓ 診斷書已加密上傳至 GCA 中央資料庫。紙本副本將由無人機於 24 小時內投遞至您的住所。
+          ✓ 診斷書已被渲染並轉換為高解析度 JPG。紙本副本將由執法無人機於 24 小時內送達您的住所。
         </p>
       </div>
-
     </div>
-
   </div>
 
   <!-- ══════════════════════════════════════════
-       JavaScript 互動邏輯
+       JavaScript 互動與分數核心邏輯
   ══════════════════════════════════════════ -->
   <script>
-    /* ───────────────────────────────────
-       初始化 Lucide Icons
-    ─────────────────────────────────── */
     document.addEventListener('DOMContentLoaded', () => {
       if (window.lucide) lucide.createIcons();
-      setupLiveUpdate();
     });
 
-    /* ───────────────────────────────────
-       步驟切換函式
-    ─────────────────────────────────── */
     function goToStep(stepId) {
-      // 隱藏所有步驟
       document.querySelectorAll('.step-screen').forEach(el => el.classList.remove('active'));
-      // 顯示目標步驟
       document.getElementById(stepId).classList.add('active');
-      // 捲回頂部
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* ───────────────────────────────────
-       即時更新污染度預覽
-    ─────────────────────────────────── */
-    function setupLiveUpdate() {
-      document.querySelectorAll('input[name="item"]').forEach(cb => {
-        cb.addEventListener('change', updateLiveBar);
-      });
-    }
-
+    // 計算四個頁面的 Radio 加總分數
     function getTotalPercent() {
       let total = 0;
-      document.querySelectorAll('input[name="item"]:checked').forEach(cb => {
-        total += parseInt(cb.value);
+      // 尋找表單中所有被選中的單選按鈕
+      const checkedRadios = document.querySelectorAll('input[type="radio"]:checked');
+      checkedRadios.forEach(radio => {
+        total += parseInt(radio.value);
       });
-      return Math.min(total, 100); // 上限 100%
+      // 防呆機制：控制在 0% 到 100% 之間
+      return Math.max(0, Math.min(total, 100));
     }
 
-    function updateLiveBar() {
-      const pct = getTotalPercent();
-      const bar = document.getElementById('live-bar');
-      const label = document.getElementById('live-percent');
-      bar.style.width = pct + '%';
-      // 顏色隨污染度變化
-      if (pct <= 15) {
-        bar.style.background = '#00FF66';
-      } else if (pct <= 50) {
-        bar.style.background = '#FF8800';
-      } else {
-        bar.style.background = '#FF2200';
-      }
-      label.textContent = pct + '%';
-      label.style.color = pct <= 15 ? '#00FF66' : pct <= 50 ? '#FF8800' : '#FF2200';
-    }
-
-    /* ───────────────────────────────────
-       掃描動畫偽科技訊息列表
-    ─────────────────────────────────── */
     const SCAN_MESSAGES = [
       '> 初始化神經元毒素分析模組 v1.42...',
       '> 建立量子糾纏傳輸通道...',
-      '> 正在提取大腦顳葉奈米粒子...',
+      '> 正在分析申報之四項生活矩陣...',
       '> 掃描前額葉遠古記憶殘留...',
       '> 檢測杏仁核戰爭情緒指數...',
       '> 正在解碼遠古好戰生物基因序列...',
       '> 上傳至 GCA 量子神經資料庫...',
-      '> 比對「盤古大陸意識化石」樣本庫...',
       '> 計算遠古幽靈粒子吸入總量...',
-      '> 評估大腦被劫持可能性...',
       '> 應用 GCA-77B 神經污染評分模型...',
-      '> 生成市民意識健康診斷書...',
-      '> 加密並上傳至隔離管制中央系統...',
+      '> 生成隨機政府控制警語...',
+      '> 建立未來公民意識健康診斷書...',
       '> 掃描完成 ✓',
     ];
 
@@ -1030,25 +917,20 @@
     let scanMsgIndex = 0;
 
     function startScan() {
-      // 切換到掃描畫面
       goToStep('step-scanning');
-
-      // 重設
       scanMsgIndex = 0;
       document.getElementById('msg-container').innerHTML = '';
       document.getElementById('scan-percent-display').textContent = '0%';
 
-      // 重設掃描環動畫（重新觸發）
       const ring = document.querySelector('.scan-ring');
       if (ring) {
         ring.style.animation = 'none';
-        ring.getBoundingClientRect(); // 強制 reflow
+        ring.getBoundingClientRect(); 
         ring.style.animation = 'fillRing 2.5s ease-out forwards';
       }
 
-      // 偽科技訊息逐行顯示
       const msgContainer = document.getElementById('msg-container');
-      const totalDuration = 2500; // 總掃描時間 ms
+      const totalDuration = 2500; 
       const msgDelay = totalDuration / SCAN_MESSAGES.length;
 
       scanInterval = setInterval(() => {
@@ -1057,164 +939,148 @@
           line.textContent = SCAN_MESSAGES[scanMsgIndex];
           line.className = 'text-nano-green opacity-80';
           msgContainer.appendChild(line);
-          // 自動捲到最新訊息
           msgContainer.scrollTop = msgContainer.scrollHeight;
           scanMsgIndex++;
 
-          // 更新百分比
           const pct = Math.round((scanMsgIndex / SCAN_MESSAGES.length) * 100);
           document.getElementById('scan-percent-display').textContent = pct + '%';
         } else {
           clearInterval(scanInterval);
-          // 掃描完成，切換到結果頁
           setTimeout(() => showResult(), 400);
         }
       }, msgDelay);
     }
 
     /* ───────────────────────────────────
-       計算並顯示結果
+       反烏托邦社會政府隨機標語資料庫
     ─────────────────────────────────── */
+    const SLOGANS_CLEAN = [
+      "「純淨的靈魂是帝國最堅固的長城。保持無暇，唯有服從。」",
+      "「純淨不是一種選擇，它是市民應盡的法定義務。」",
+      "「監控是高尚的慈悲。管理局看見您的純淨，並深表讚許。」",
+      "「消滅石化思想，擁抱純淨明天。今天您檢測了嗎？」"
+    ];
+
+    const SLOGANS_WARN = [
+      "「懷疑是神經退化的前兆。請停止與非註冊物質接觸。」",
+      "「放縱一次石化消費，就是給自由多銬上一道鐵枷。」",
+      "「警惕！你的前額葉正被來自遠古的戰亂亡魂侵蝕。」",
+      "「黑金正在對你耳語。管理局正在注視你。請立刻向排毒中心自首。」"
+    ];
+
+    const SLOGANS_DANGER = [
+      "「放棄抵抗。血肉載具無權享有公民權益。就地隔離是唯一的仁慈。」",
+      "「你的大腦已被沒收。任何多餘的思考都將被視為叛國暴動。」",
+      "「執法無人機已升空。逃跑只會提高消滅的優先級。」",
+      "「當戰神甦醒，你將不再是你。清除指令已發送。」"
+    ];
+
     function showResult() {
       const rawPct = getTotalPercent();
-      const particles = Math.round(rawPct * 3.74 * 10); // 偽計算：幽靈粒子總量
+      const particles = Math.round(rawPct * 3.74 * 10);
 
-      // 設定案件編號與時間戳
-      document.getElementById('case-id').textContent = 'NNP-' + Math.floor(Math.random() * 900000 + 100000);
+      document.getElementById('case-id').textContent = Math.floor(Math.random() * 900000 + 100000);
       document.getElementById('report-timestamp').textContent = new Date().toLocaleString('zh-TW');
 
-      // 核心數字（帶顏色）
       const pctEl = document.getElementById('result-percent');
       const partEl = document.getElementById('result-particles');
       pctEl.textContent = rawPct + '%';
       partEl.textContent = particles.toLocaleString();
 
-      // 根據污染度決定顏色
-      let mainColor, mainGlow;
+      let mainColor, slogan;
       if (rawPct <= 15) {
-        mainColor = '#00FF66'; mainGlow = 'glow-green';
+        mainColor = '#00FF66';
+        pctEl.className = "font-display text-4xl font-black glow-green";
+        slogan = SLOGANS_CLEAN[Math.floor(Math.random() * SLOGANS_CLEAN.length)];
       } else if (rawPct <= 50) {
-        mainColor = '#FF8800'; mainGlow = 'glow-orange';
+        mainColor = '#FF8800';
+        pctEl.className = "font-display text-4xl font-black glow-orange";
+        slogan = SLOGANS_WARN[Math.floor(Math.random() * SLOGANS_WARN.length)];
       } else {
-        mainColor = '#FF2200'; mainGlow = 'glow-red';
+        mainColor = '#FF2200';
+        pctEl.className = "font-display text-4xl font-black glow-red";
+        slogan = SLOGANS_DANGER[Math.floor(Math.random() * SLOGANS_DANGER.length)];
       }
       pctEl.style.color = mainColor;
+      document.getElementById('random-gov-slogan').textContent = slogan;
 
-      // 大腦區塊柱狀圖
+      // 大腦污染圖表更新
       setTimeout(() => {
-        const frontalPct = Math.min(rawPct * 0.9, 100);
-        const amygdalaPct = Math.min(rawPct * 1.1, 100);
-        const hippoPct = Math.min(rawPct * 0.75, 100);
-        document.getElementById('bar-frontal').style.height = frontalPct + '%';
-        document.getElementById('bar-amygdala').style.height = amygdalaPct + '%';
-        document.getElementById('bar-hippo').style.height = hippoPct + '%';
+        document.getElementById('bar-frontal').style.height = Math.min(rawPct * 0.9, 100) + '%';
+        document.getElementById('bar-amygdala').style.height = Math.min(rawPct * 1.2, 100) + '%';
+        document.getElementById('bar-hippo').style.height = Math.min(rawPct * 0.75, 100) + '%';
         document.getElementById('main-bar').style.width = rawPct + '%';
         document.getElementById('bar-label').textContent = rawPct + '%';
         document.getElementById('bar-label').style.color = mainColor;
       }, 200);
 
-      // 公民等級評定
+      // 動態更新公民評級與評語
       const gradeBlock = document.getElementById('citizen-grade-block');
       const recoBlock = document.getElementById('recommendations');
 
       if (rawPct <= 15) {
         gradeBlock.className = 'mb-6 p-4 border border-nano-green border-opacity-40 bg-nano-dark bg-opacity-20 relative';
         gradeBlock.innerHTML = `
-          <div class="font-mono text-xs text-nano-dim opacity-70 tracking-wider mb-2">公民等級評定</div>
+          <div class="font-mono text-xs text-nano-dim opacity-70 tracking-wider mb-2 font-bold">公民等級評定</div>
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-12 h-12 rounded-full border-2 border-nano-green flex items-center justify-center flex-shrink-0" style="box-shadow: 0 0 12px #00FF6644;">
-              <span class="text-nano-green text-xl">◎</span>
-            </div>
-            <div>
-              <div class="font-display text-nano-green glow-green text-2xl font-bold tracking-widest">【純淨公民】</div>
-              <div class="font-mono text-xs text-nano-dim opacity-80 mt-0.5">CONSCIOUSNESS LEVEL: PRISTINE</div>
-            </div>
+            <div class="font-display text-nano-green glow-green text-xl font-bold tracking-widest">【純淨公民】 PRISTINE</div>
           </div>
-          <p class="font-body text-nano-green text-sm opacity-80 leading-relaxed">
-            您的神智清明，大腦顳葉未受遠古戰神意識污染。繼續保持零石化接觸生活方式，您將成為人類意識進化的燈塔。
+          <p class="font-body text-nano-green opacity-90 leading-relaxed">
+            您的神智極度清明，大腦顳葉未受遠古戰神意識污染。繼續保持零石化接觸生活方式，您將成為人類意識進化的未來燈塔。
           </p>
         `;
         recoBlock.innerHTML = `
-          <div class="flex gap-2"><span class="text-nano-green opacity-60">▸</span><span>繼續維持無石化生活方式，接觸天然材質製品</span></div>
-          <div class="flex gap-2"><span class="text-nano-green opacity-60">▸</span><span>每季進行一次例行性神經純淨度維護掃描</span></div>
-          <div class="flex gap-2"><span class="text-nano-green opacity-60">▸</span><span>您的意識健康信用評分已自動提升 +50 點</span></div>
+          <div>▸ 繼續維持無石化生活方式，接觸全天然材質製品。</div>
+          <div>▸ 每季進行一次例行性神經純淨度維護掃描。</div>
+          <div>▸ 您的意識健康信用評分已自動提升 +50 點。</div>
         `;
       } else if (rawPct <= 50) {
-        gradeBlock.className = 'mb-6 p-4 border border-alert-orange border-opacity-50 relative' ;
+        gradeBlock.className = 'mb-6 p-4 border border-alert-orange border-opacity-50 relative';
         gradeBlock.style.background = '#1A0A0022';
         gradeBlock.innerHTML = `
-          <div class="font-mono text-xs text-alert-orange opacity-70 tracking-wider mb-2">公民等級評定</div>
+          <div class="font-mono text-xs text-alert-orange opacity-70 tracking-wider mb-2 font-bold">公民等級評定</div>
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-12 h-12 rounded-full border-2 border-alert-orange flex items-center justify-center flex-shrink-0" style="box-shadow: 0 0 12px #FF550044;">
-              <span class="text-alert-orange text-xl">⚠</span>
-            </div>
-            <div>
-              <div class="font-display text-alert-orange glow-orange text-2xl font-bold tracking-widest">【潛在帶原者】</div>
-              <div class="font-mono text-xs text-alert-dim opacity-80 mt-0.5">CONSCIOUSNESS LEVEL: CONTAMINATED</div>
-            </div>
+            <div class="font-display text-alert-orange glow-orange text-xl font-bold tracking-widest">【潛在帶原者】 CONTAMINATED</div>
           </div>
-          <p class="font-body text-alert-orange text-sm opacity-80 leading-relaxed">
-            您已出現遠古好戰情緒感染初期症狀：情緒易怒、日常焦慮、莫名對陌生人感到敵意。建議立即遠離塑膠製品，接受 14 天黑金排毒療程。
+          <p class="font-body text-alert-orange opacity-90 leading-relaxed">
+            您已出現遠古好戰情緒感染初期症狀：情緒易怒、日常焦慮、莫名對環境感到敵意。建議立即遠離塑膠與化學石化製品。
           </p>
         `;
         recoBlock.innerHTML = `
-          <div class="flex gap-2"><span class="text-alert-orange opacity-60">▸</span><span style="color:#FF8800">立即停止使用所有非必要石化製品，至少 21 天</span></div>
-          <div class="flex gap-2"><span class="text-alert-orange opacity-60">▸</span><span style="color:#FF8800">每日進行「意識淨化呼吸法」：深吸純淨森林空氣 12 分鐘</span></div>
-          <div class="flex gap-2"><span class="text-alert-orange opacity-60">▸</span><span style="color:#FF8800">您的意識健康信用評分已標記為「黃色警戒」，部分公共設施存取受限</span></div>
-          <div class="flex gap-2"><span class="text-alert-orange opacity-60">▸</span><span style="color:#FF8800">系統已自動預約您本週六前往最近黑金排毒中心報到</span></div>
+          <div class="text-alert-orange">▸ 立即停止使用所有非必要石化製品，執行 21 天隔離阻斷。</div>
+          <div class="text-alert-orange">▸ 您的意識健康信用評分已被系統標記為「黃色警戒」，部分公共設施存取受限。</div>
+          <div class="text-alert-orange">▸ 系統已自動幫您預約本週六前往最近黑金排毒中心報到。</div>
         `;
       } else {
         gradeBlock.className = 'mb-6 p-4 border border-red-600 border-opacity-70 relative alert-danger-blink';
         gradeBlock.style.background = '#1A000022';
         gradeBlock.innerHTML = `
-          <div class="absolute top-0 right-0 font-mono text-xs px-2 py-0.5" style="background:#FF2200; color:#050505; font-weight:700; letter-spacing:0.1em">高度危險</div>
-          <div class="font-mono text-xs opacity-70 tracking-wider mb-2" style="color:#FF2200">公民等級評定</div>
+          <div class="absolute top-0 right-0 font-mono text-xs px-2 py-0.5" style="background:#FF2200; color:#050505; font-weight:700;">高度危險</div>
+          <div class="font-mono text-xs opacity-70 tracking-wider mb-2 font-bold" style="color:#FF2200">公民等級評定</div>
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-12 h-12 rounded-full border-2 flex items-center justify-center flex-shrink-0 alert-danger-blink" style="border-color:#FF2200; box-shadow: 0 0 16px #FF220066;">
-              <span style="color:#FF2200; font-size:1.4rem;">☠</span>
-            </div>
-            <div>
-              <div class="font-display font-bold tracking-widest glow-red" style="color:#FF2200; font-size:1.5rem;">【血肉載具】</div>
-              <div class="font-mono text-xs opacity-80 mt-0.5" style="color:#CC0000">CONSCIOUSNESS LEVEL: WEAPONIZED</div>
-            </div>
+            <div class="font-display font-bold tracking-widest glow-red text-xl">【血肉載具】 WEAPONIZED</div>
           </div>
-          <div class="p-3 border border-opacity-50" style="border-color:#FF2200; background:#0A000033;">
-            <p class="font-mono text-xs leading-relaxed" style="color:#FF4444">
-              ⚠ 緊急通報：您已被自動標記為<strong>潛在暴力份子</strong>，大腦已遭戰亂記憶劫持，遠古好戰物種意識殘留量超過安全閾值 3.7 倍。<br/><br/>
-              請立即前往隔離區進行「<strong>黑金戒斷</strong>」，否則將依《2031年神經衛生法》第 77 條限制您的公民自由權利，包含但不限於：投票權、出行自由、公共網路使用權。
-            </p>
-          </div>
+          <p class="font-mono text-sm leading-relaxed" style="color:#FF4444">
+            ⚠ 緊急通報：您已被自動標記為<strong>潛在暴力分子</strong>。遠古好戰物種意識殘留量超過安全閾值 3.7 倍。請立即原地等候無人機拘捕。
+          </p>
         `;
         recoBlock.innerHTML = `
-          <div class="flex gap-2"><span style="color:#FF2200; opacity:0.8">▸</span><span style="color:#FF6644">立即撥打意識健康緊急熱線：0800-ANCIENT-WAR</span></div>
-          <div class="flex gap-2"><span style="color:#FF2200; opacity:0.8">▸</span><span style="color:#FF6644">強制入住黑金戒斷中心，最少 30 天隔離療程</span></div>
-          <div class="flex gap-2"><span style="color:#FF2200; opacity:0.8">▸</span><span style="color:#FF6644">執法無人機已收到您的位置，請原地等候人員到達</span></div>
-          <div class="flex gap-2"><span style="color:#FF2200; opacity:0.8">▸</span><span style="color:#FF6644">您的社會信用已降至 D 級，公共運輸存取已停用</span></div>
+          <div style="color:#FF2200">▸ 執法無人機已調閱 GPS 軌跡，請保持在視線範圍內，切勿移動。</div>
+          <div style="color:#FF2200">▸ 強制入住黑金戒斷隔離中心，依《神經衛生法》限制全部公民自由。</div>
+          <div style="color:#FF2200">▸ 您的社會信用已降至最低 D 級，公共運輸與實體網絡存取權限全數切斷。</div>
         `;
       }
 
-      // 切換到結果頁
       goToStep('step-result');
     }
 
-    /* ───────────────────────────────────
-       重設所有狀態
-    ─────────────────────────────────── */
     function resetAll() {
-      // 清空表單
-      document.querySelectorAll('input[name="item"]').forEach(cb => { cb.checked = false; });
-      // 重設即時bar
-      document.getElementById('live-bar').style.width = '0%';
-      document.getElementById('live-percent').textContent = '0%';
-      // 清除下載提示
+      // 取消所有 Radio 的勾選
+      document.querySelectorAll('input[type="radio"]').forEach(radio => { radio.checked = false; });
       document.getElementById('download-toast').classList.add('hidden');
-      // 回到歡迎頁
       goToStep('step-welcome');
     }
 
-    /* ───────────────────────────────────
-       偽下載功能
-    ─────────────────────────────────── */
     function fakeDownload() {
       const toast = document.getElementById('download-toast');
       toast.classList.remove('hidden');

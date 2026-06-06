@@ -418,7 +418,7 @@
               警告：您今日的每一次石化消費，都在為遠古戰神注射興奮劑。
             </p>
             <p class="font-mono text-sm text-alert-orange opacity-90 mt-3 leading-relaxed">
-              根據 2030 年《劍橋意識考古報告》第 VI 卷，石油乃遠古好戰物種滅絕後意識化石化之產物。燃燒或接觸石化製品，將釋放「奈米級神經寄生物質（Nano-Neural Parasites™）」，直接劫持人類大腦顳葉，誘發全球性集體暴力意識。
+              根據 2030 年《劍橋意識考古報告》第 VI 卷，石油乃遠古好戰物種滅絕後意識化化之產物。燃燒或接觸石化製品，將釋放「奈米級神經寄生物質（Nano-Neural Parasites™）」，直接劫持人類大腦顳葉，誘發全球性集體暴力意識。
             </p>
           </div>
         </div>
@@ -688,7 +688,7 @@
 
 
     <!-- ────────────────────────────────────────
-         步驟四：診斷報告頁（已完全微調優化）
+         步驟四：診斷報告頁
     ──────────────────────────────────────── -->
     <div id="step-result" class="step-screen">
       <div class="mb-6">
@@ -709,7 +709,7 @@
 
         <div class="relative z-10">
           <div class="text-center mb-6 pb-4 border-b border-nano-dark">
-            <div class="font-mono text-nano-green text-xs opacity-50 tracking-widest mb-1">全球意識健康管理局</div>
+            <div class="font-mono text-xs opacity-50 tracking-widest mb-1">全球意識健康管理局</div>
             <div class="font-display text-nano-green glow-green text-base font-bold tracking-widest">未來公民意識健康診斷書</div>
             <div class="font-mono text-xs text-text-muted opacity-40 mt-1">CITIZEN CONSCIOUSNESS HEALTH CERTIFICATE · FORM GCA-77B</div>
           </div>
@@ -768,16 +768,16 @@
             </div>
           </div>
 
-          <!-- 1. & 3. 修改：公民等級評定區塊（外框色動態聯動、全白標題、其餘全紅，且血肉載具行距拉寬） -->
+          <!-- 公民等級評定區塊 -->
           <div id="citizen-grade-block" class="mb-6 p-4 border relative"></div>
 
-          <!-- 4. 修改：政府監控警告標語外部增加垂直行距 mb-8 -->
+          <!-- 政府監控警告標語 -->
           <div class="border border-alert-orange bg-alert-dark bg-opacity-20 p-4 mb-8" id="gov-warning-box">
             <div class="font-mono text-xs text-alert-orange font-bold tracking-widest mb-2">☠ GCA 政府監控警告標語 ☠</div>
             <p class="font-body text-white italic text-sm leading-relaxed" id="random-gov-slogan">載入中...</p>
           </div>
 
-          <!-- 5. 修改：系統建議措施內文改為灰色、且字級再次縮小為更密集的 0.95rem -->
+          <!-- 系統建議措施 -->
           <div class="bg-oil-black border border-wire-gray p-4 mb-4">
             <div class="font-mono text-xs text-text-muted opacity-60 tracking-wider mb-3">系統建議措施</div>
             <div id="recommendations" class="font-body text-text-muted leading-loose space-y-2 font-normal-ignore" style="font-size: 0.95rem !important;"></div>
@@ -795,7 +795,7 @@
         </div>
       </div>
 
-      <!-- 6. 修改：底部按鈕完美雙端置左置右對齊 -->
+      <!-- 底部按鈕雙端對齊 -->
       <div class="flex justify-between items-center w-full mb-6">
         <button class="btn-primary" onclick="resetAll()"><span>↺ 重新檢測</span></button>
         <button class="btn-danger" onclick="fakeDownload()">⬇ 下載 jpg.診斷書</button>
@@ -815,14 +815,49 @@
       if (window.lucide) lucide.createIcons();
     });
 
-    function goToStep(stepId) {
+    const STEP_QUESTIONS = {
+      'step-input-1': ['q1', 'q2', 'q3'],
+      'step-input-2': ['q4', 'q5', 'q6'],
+      'step-input-3': ['q7', 'q8', 'q9'],
+      'step-input-4': ['q10', 'q11', 'q12']
+    };
+
+    function validateStep(currentStepId) {
+      const qNames = STEP_QUESTIONS[currentStepId];
+      if (!qNames) return true;
+
+      for (const name of qNames) {
+        const isChecked = document.querySelector(`input[name="${name}"]:checked`);
+        if (!isChecked) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function goToStep(targetStepId) {
+      const currentStep = document.querySelector('.step-screen.active');
+      const currentStepId = currentStep ? currentStep.id : '';
+
+      if (currentStepId && currentStepId.startsWith('step-input-')) {
+        const currentNum = parseInt(currentStepId.replace('step-input-', ''));
+        const targetNum = targetStepId.startsWith('step-input-') ? parseInt(targetStepId.replace('step-input-', '')) : 99;
+        
+        if (targetNum > currentNum) {
+          if (!validateStep(currentStepId)) {
+            alert("⚠ 警告：中央資料庫偵測到未申報的生活行為欄位。\n根據《神經衛生法》第 3 條，不完整申報將被視為主動規避普查，請補齊本頁所有項目再行前進！");
+            return;
+          }
+        }
+      }
+
       document.querySelectorAll('.step-screen').forEach(el => el.classList.remove('active'));
-      document.getElementById(stepId).classList.add('active');
+      document.getElementById(targetStepId).classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function getTotalPercent() {
-      let total = 0;
+      let total = 20;
       const checkedRadios = document.querySelectorAll('input[type="radio"]:checked');
       checkedRadios.forEach(radio => {
         total += parseInt(radio.value);
@@ -849,6 +884,12 @@
     let scanMsgIndex = 0;
 
     function startScan() {
+      const totalChecked = document.querySelectorAll('input[type="radio"]:checked').length;
+      if (totalChecked < 12) {
+        alert("⚠ 嚴重錯誤：GCA 中央核心拒絕處理殘缺數據。\n檢測到整體申報矩陣尚有未填寫欄位，請退回前方分頁依規填答！");
+        return;
+      }
+
       goToStep('step-scanning');
       scanMsgIndex = 0;
       document.getElementById('msg-container').innerHTML = '';
@@ -916,12 +957,13 @@
       pctEl.textContent = rawPct + '%';
       partEl.textContent = particles.toLocaleString();
 
+      // 【這裡已修正】擴大橘色帶原者的判定區間，讓三個顏色都能被順利觸發
       let mainColor, slogan;
-      if (rawPct <= 15) {
+      if (rawPct <= 35) {
         mainColor = '#00FF66';
         pctEl.className = "font-display text-4xl font-black glow-green";
         slogan = SLOGANS_CLEAN[Math.floor(Math.random() * SLOGANS_CLEAN.length)];
-      } else if (rawPct <= 50) {
+      } else if (rawPct <= 75) {
         mainColor = '#FF8800';
         pctEl.className = "font-display text-4xl font-black glow-orange";
         slogan = SLOGANS_WARN[Math.floor(Math.random() * SLOGANS_WARN.length)];
@@ -942,13 +984,10 @@
         document.getElementById('bar-label').style.color = mainColor;
       }, 200);
 
-      // 1. & 3. 修改：根據危險程度動態決定外框顏色。
-      // 左上角標題恆為全白 (#FFFFFF)，但其餘內文、警告、通報隨外框程度變換顏色（高度危險時全為紅色）。
       const gradeBlock = document.getElementById('citizen-grade-block');
       const recoBlock = document.getElementById('recommendations');
 
-      if (rawPct <= 15) {
-        // 輕度或無危險：綠色框、除了白色標題外內文皆為綠色
+      if (rawPct <= 35) {
         gradeBlock.className = 'mb-6 p-4 border border-nano-green border-opacity-60 bg-ghost-gray bg-opacity-40 relative';
         gradeBlock.innerHTML = `
           <div class="font-mono text-xs text-white tracking-wider mb-3 font-bold">公民等級評定</div>
@@ -966,8 +1005,7 @@
           <div>▸ 每季進行一次例行性神經純淨度維護掃描。</div>
           <div>▸ 您的意識健康信用評分已自動提升 +50 點。</div>
         `;
-      } else if (rawPct <= 50) {
-        // 中度危險：橙色框、除了白色標題外內文皆為橙色
+      } else if (rawPct <= 75) {
         gradeBlock.className = 'mb-6 p-4 border border-alert-orange border-opacity-70 relative';
         gradeBlock.style.background = '#1A0A0022';
         gradeBlock.innerHTML = `
@@ -977,7 +1015,7 @@
           </div>
           <div class="mt-3">
             <p class="font-body text-alert-orange opacity-90 leading-loose">
-              您已出現遠古好戰情緒感染初期症狀：情緒易怒、日常焦慮、莫名對環境感到敵意。建議立即遠離塑膠與化學石化製品。
+              您已出現遠古好戰情緒感染初期症狀：情緒易怒、日常焦慮、莫名對環境感到敵意。建議立即遠遠離塑膠與化學石化製品。
             </p>
           </div>
         `;
@@ -987,7 +1025,6 @@
           <div>▸ 系統已自動幫您預約本週六前往最近黑金排毒中心報到。</div>
         `;
       } else {
-        // 高度危險：紅色框、右上角高度危險標籤、除了白色標題外內文全為醒目紅字，並拉寬主標題間距
         gradeBlock.className = 'mb-6 p-4 border border-red-600 border-opacity-80 relative alert-danger-blink';
         gradeBlock.style.background = '#1A000033';
         gradeBlock.innerHTML = `
